@@ -70,7 +70,7 @@ export default {
         }
       }
     })
-
+   // dwadw
     chart
       .line()
       .position('item*score')

@@ -4,7 +4,8 @@
     <template slot="dateCell" slot-scope="{ date, data }">
       <div class="date-content">
         <span class="text">{{ data.day.split('-')[2] }}</span>
-        <span v-if="isWeekEnd(date)" class="rest">休</span>
+        <span v-if="isWeekEnd(date)" class="rest">休1</span>
+        <h2></h2>
       </div>
     </template>
   </el-calendar>
