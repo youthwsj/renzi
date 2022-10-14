@@ -1,0 +1,30 @@
+@import './base.scss';
+body{
+  h1 {color: $primary-color;}
+}
+.container {
+  @include bc;
+  color: #ccc;
+}
+
+.main {
+  @include bc;
+
+  border: 1px solid #ccc;
+}
+// a 的颜色
+// a hover颜色
+// a {
+//   color: yellow;
+// }
+// a:hover{
+//   font-size: 50px
+// }
+
+a {
+  color: yellow;
+  &:hover{
+    font-size: 50px;
+    color: $primary-color;
+  }
+}

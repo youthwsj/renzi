@@ -1,0 +1,8 @@
+// 定义变量
+$color1: #f52;
+
+// 定义 mixins
+@mixin container {
+  width: 1200px;
+  background-color: green;
+}

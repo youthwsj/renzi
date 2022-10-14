@@ -1,0 +1,71 @@
+<script>
+
+
+  
+// 用来将平铺的数组转树状结构
+/**
+ *
+arr = [
+  { 'id': '29', 'pid': '',     'name': '总裁办' },
+  { 'id': '2c', 'pid': '',     'name': '财务部' },
+  { 'id': '2d', 'pid': '2c',   'name': '财务核算部'},
+  { 'id': '2f', 'pid': '2c',   'name': '薪资管理部'},
+  { 'id': 'd2', 'pid': '',     'name': '技术部'},
+  { 'id': 'd3', 'pid': 'd2',   'name': 'Java研发部'}
+]
+// 输入 arr 输出tree
+// 递归
+// 1. 定义函数，它能从指定的数组中找指定pid的children
+    arr2tree(arr, '') ==> [
+      { 'id': '29', 'pid': '','name': '总裁办'},
+      { 'id': '2c', 'pid': '','name': '财务部' },
+      { 'id': 'd2', 'pid': '','name': '技术部'}
+    ]
+    2. 对结果中的每一个元素，继续找chilren： pid 是当前元素的id。例如 '2c'
+     arr2tree(arr,'2c') ===> [
+      { 'id': '2d', 'pid': '2c', 'name': '财务核算部'},
+      { 'id': '2f', 'pid': '2c', 'name': '薪资管理部'},
+     ]
+    3. 把找到的结果当做children
+
+tree = [
+  { 'id': '29', 'pid': '',     'name': '总裁办' },
+  { 'id': '2c', 'pid': '',     'name': '财务部', children: [
+      { 'id': '2d', 'pid': '2c',   'name': '财务核算部'},
+      { 'id': '2f', 'pid': '2c',   'name': '薪资管理部'}]
+  },
+  { 'id': 'd2', 'pid': '',     'name': '技术部', children: [
+    { 'id': 'd3', 'pid': 'd2',   'name': 'Java研发部'}]
+  }
+]
+
+ */
+
+// 在arr数组中，找出pid为第二个参数的元素 ===> 找children
+function array2Tree(arr, pid) {
+  // 找children
+  const tree = arr.filter(item => item.pid === pid)
+  // { 'id': '29', 'pid': '',     'name': '总裁办', },
+  // { 'id': '2c', 'pid': '',     'name': '财务部' },
+  // { 'id': 'd2', 'pid': '',     'name': '技术部'},
+
+  // 对children的每一项继续找children
+  tree.forEach(item => {
+    item.children = array2Tree(arr, item.id)
+  })
+  // 返回children
+  return tree
+}
+
+const arr = [
+  { 'id': '29', 'pid': '',     'name': '总裁办' },
+  { 'id': '2c', 'pid': '',     'name': '财务部' },
+  { 'id': '2d', 'pid': '2c',   'name': '财务核算部'},
+  { 'id': '2f', 'pid': '2c',   'name': '薪资管理部'},
+  { 'id': 'd2', 'pid': '',     'name': '技术部'},
+  { 'id': 'd3', 'pid': 'd2',   'name': 'Java研发部'},
+  { 'id': 'd4', 'pid': 'd3',   'name': 'Java研发部01'}
+]
+console.log(array2Tree(arr, ''))
+
+</script>

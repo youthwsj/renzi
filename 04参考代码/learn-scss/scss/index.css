@@ -1,0 +1,26 @@
+body h1 {
+  color: #123;
+}
+
+.container {
+  width: 1200px;
+  margin: auto;
+  text-align: center;
+  color: #ccc;
+}
+
+.main {
+  width: 1200px;
+  margin: auto;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+a {
+  color: yellow;
+}
+
+a:hover {
+  font-size: 50px;
+  color: #123;
+}

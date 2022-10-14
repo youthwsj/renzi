@@ -1,0 +1,161 @@
+<template>
+  <div class="department-container">
+    <div class="app-container">
+      <el-card>
+        <!-- 用一个行列布局 -->
+        <!-- el的栅格系统： 一行分24列 -->
+        <el-row type="flex" justify="space-between" align="middle" style="height: 40px">
+          <el-col :span="20">
+            <svg-icon icon-class="bank" /><span>江苏传智播客教育科技股份有限公司</span>
+          </el-col>
+          <el-col :span="4">
+            <el-row type="flex" justify="end">
+              <!-- 两个内容 -->
+              <el-col>负责人</el-col>
+              <!-- 下拉菜单 element -->
+              <el-col>
+                <el-dropdown>
+                  <span>
+                    操作<i class="el-icon-arrow-down" />
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item @click.native="hAdd('')">添加子部门</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+
+        <!-- 主体 -->
+        <el-tree :data="list" default-expand-all>
+          <template v-slot="scope">
+            <el-row type="flex" justify="space-between" align="middle" style="height: 40px;width: 100%;">
+              <el-col :span="20">
+                <svg-icon icon-class="bank" /><span>{{ scope.data.name }}</span>
+              </el-col>
+              <el-col :span="4">
+                <el-row type="flex" justify="end">
+                  <!-- 两个内容 -->
+                  <el-col>{{ scope.data.manager }}</el-col>
+                  <!-- 下拉菜单 element -->
+                  <el-col>
+                    <el-dropdown>
+                      <span>
+                        操作<i class="el-icon-arrow-down" />
+                      </span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click.native="hAdd(scope.data.id)">添加子部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="hDel(scope.data.id)">删除部门</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </template>
+        </el-tree>
+
+      </el-card>
+    </div>
+
+    <el-dialog title="添加|编辑 部门" :visible.sync="showDialog">
+      <depDialog :pid="curId" @success="hSuccess" />
+    </el-dialog>
+  </div>
+</template>
+<script>
+import { getDepartments, delDepartment } from '@/api/department'
+import { array2Tree } from '@/utils/index'
+import depDialog from './depDialog.vue'
+export default {
+  components: { depDialog },
+  // 1. vuex: actions
+  // 2. 路由跳转
+  // 3. 组件created
+  data() {
+    return {
+      curId: '',
+      showDialog: false,
+      // 依赖一份树形数据
+      list: [{
+        name: '财务部',
+        manager: '刘备',
+        children: [
+          {
+            name: '财务核算部',
+            manager: '张飞'
+          },
+          {
+            name: '税务核算部',
+            manager: '关羽'
+          }
+        ]
+      },
+      {
+        name: '财务部',
+        manager: '刘备',
+        children: [
+          {
+            name: '财务核算部',
+            manager: '张飞'
+          },
+          {
+            name: '税务核算部',
+            manager: '关羽'
+          }
+        ]
+      }]
+    }
+  },
+  created() {
+    this.loadDepartments()
+  },
+  methods: {
+    // 收到子组件的事件: 操作成功
+    hSuccess() {
+      // alert('收到子组件的事件: 操作成功')
+      // 1. 关闭弹层
+      this.showDialog = false
+      // 2. 更新数据
+      this.loadDepartments()
+    },
+    async doDel(id) {
+      // 1. 调用接口做删除
+      await delDepartment(id)
+      this.$message.success('删除成功')
+      // 2. 重发请求
+      this.loadDepartments()
+    },
+    // 删除部门
+    hDel(id) {
+      // 确认框
+      this.$confirm('是否要删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 删除操作
+        this.doDel(id)
+      }).catch(() => {
+
+      })
+    },
+    hAdd(id) {
+      // 1. 获取当前被点击的部门的id
+      console.log(id)
+      this.curId = id
+      // 2. 点击添加部门，显示弹框
+      this.showDialog = true
+    },
+    async loadDepartments() {
+      const res = await getDepartments()
+      res.data.depts.shift()
+      // 根据业务的需要，去掉数组第一个元素
+      console.log(res.data.depts)
+      // 渲染数据
+      this.list = array2Tree(res.data.depts, '')
+    }
+  }
+}
+</script>

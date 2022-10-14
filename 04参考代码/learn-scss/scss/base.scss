@@ -1,0 +1,10 @@
+// 变量
+$primary-color: #123;
+
+// mixin
+// 复用一段代码
+@mixin bc {
+  width: 1200px;
+  margin: auto;
+  text-align: center;
+}

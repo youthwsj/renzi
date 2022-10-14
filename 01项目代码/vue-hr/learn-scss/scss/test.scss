@@ -1,0 +1,26 @@
+@import './base.scss';
+
+#app{
+  color: $color1;
+  .container {
+    font-size:30px;
+    // 使用mixin。 container 就表示上面的两句代码
+    @include container;
+  }
+
+  // a{
+  //   color: black;
+  // }
+  // a:hover {
+  //   color: red;
+  //   font-size: 50px;
+  // }
+  a{
+    color: black;
+    &:hover {
+      color: $color1;
+      font-size: 58px;
+    }
+  }
+
+}
