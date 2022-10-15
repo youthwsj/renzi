@@ -1,12 +1,6 @@
 <template>
   <div>
-    这里将会有一个表单
-
-    <el-form
-      ref="deptForm"
-      :rules="rules"
-      :model="form"
-    >
+    <el-form ref="deptForm" :rules="rules" :model="form">
       <el-form-item label="部门名称" prop="name" label-width="100px">
         <el-input v-model="form.name" />
       </el-form-item>
@@ -42,6 +36,10 @@ import {
   updateDepartment } from '@/api/department'
 export default {
   props: {
+    item: {
+      type: Object,
+      required: true
+    },
     pid: {
       type: String,
       required: true
@@ -56,11 +54,31 @@ export default {
     }
   },
   data() {
+    // 自定义编码重复验证函数
     const validCode = (rule, value, callback) => {
-      const codeList = this.originList.map(item => item.code)
+      let codeList = this.originList.map(item => item.code)
       console.log(codeList)
+      if (this.isEdit) {
+        // 排除当前的用户值pid
+        codeList = this.originList.filter(item => item.id !== this.pid).map(item => item.code)
+      }
+      // 判断code是否重复
       if (codeList.includes(value)) {
         callback(new Error('编码' + value + '已经存在'))
+      } else {
+        callback()
+      }
+    }
+    // 自定义名称重复验证
+    const validName = (rule, value, callback) => {
+      let nameList = this.originList.filter(item => item.pid === this.pid).map(item => item.name)
+      // console.log(nameList)
+      if (this.isEdit) {
+        nameList = this.originList.filter(item => item.pid === this.item.pid && item.id !== this.pid).map(item => item.name)
+        console.log(nameList)
+      }
+      if (nameList.includes(value)) {
+        callback(new Error(`名称${value}已经存在`))
       } else {
         callback()
       }
@@ -69,7 +87,8 @@ export default {
       rules: {
         name: [
           { required: true, message: '部门名称不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' },
+          { validator: validName, trigger: 'blur' }
         ],
         code: [
           { required: true, message: '部门编码不能为空', trigger: 'blur' },
@@ -94,11 +113,11 @@ export default {
     }
   },
   watch: {
-    pid: {
-      handler: function(newl, oldv) {
+    'pid': {
+      handler: async function(newl, oldv) {
         console.log('新值', newl, '旧值', oldv)
         if (this.isEdit) {
-          this.loadgetDepartDetail()
+          await this.loadgetDepartDetail()
         }
       },
       immediate: true
@@ -115,7 +134,7 @@ export default {
       if (this.isEdit) {
         // alert('现在是编辑，要去获取详情')
         const res = await getDepartDetail(this.pid)
-        console.log('现在是编辑，要去获取详情', res)
+        // console.log('现在是编辑，要去获取详情', res)
         this.form = res.data
       }
     },
@@ -126,6 +145,7 @@ export default {
     },
     // 添加信息
     async doAdd() {
+      console.log(this.item)
       // 调用接口
       try {
         await addDepartment({ ...this.form, pid: this.pid })
@@ -162,6 +182,11 @@ export default {
     // 取消关闭
     hCancel() {
       this.$emit('close')
+    },
+    // 清空表单
+    resetForm() {
+      this.$refs.deptForm.resetFields()
+      // console.log('resetForm')
     }
   }
 }

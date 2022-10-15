@@ -56,7 +56,7 @@
                           @click.native="hAdd(scope.data.id)"
                         >添加子部门</el-dropdown-item>
                         <el-dropdown-item
-                          @click.native="hEDit(scope.data.id)"
+                          @click.native="hEDit(scope.data)"
                         >编辑部门</el-dropdown-item>
                         <el-dropdown-item
                           @click.native="hDel(scope.data.id)"
@@ -77,9 +77,11 @@
       :close-on-click-modal="false"
       :title="(isEdit?'编辑':'添加')+'部门'"
       :visible.sync="showDialog"
+      @close="hDialogClose"
     >
       <depDialog
-        :id="curId"
+        ref="refDeptDialog"
+        :item="item"
         :origin-list="originList"
         :is-edit="isEdit"
         :pid="curId"
@@ -100,6 +102,7 @@ export default {
   // 3. 组件created
   data() {
     return {
+      item: {},
       curId: '',
       showDialog: false,
       // 区分编辑和添加
@@ -172,11 +175,14 @@ export default {
         .catch(() => {})
     },
     // 编辑部门
-    hEDit(id) {
-      this.curId = id
+    hEDit(data) {
+      console.log('当前员工内容', data)
+      this.curId = data.id
       this.isEdit = true
       // 2. 点击编辑部门，显示弹框
       this.showDialog = true
+      // 4.赋值当前内容
+      this.item = data
       // 解决点击不更新修改数据的bug
       // this.$nextTick(() => {
       // console.log('找子组件', this.$refs.showDialog)
@@ -208,6 +214,11 @@ export default {
     // 关闭弹框 取消
     hClose() {
       this.showDialog = false
+    },
+    // 调用子组件清空表单
+    hDialogClose() {
+      // console.log('close')
+      this.$refs.refDeptDialog.resetForm()
     }
   }
 }
