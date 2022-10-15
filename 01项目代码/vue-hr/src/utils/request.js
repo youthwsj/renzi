@@ -28,7 +28,7 @@ const service = axios.create({
 // 响应拦截器
 service.interceptors.response.use(
   response => {
-    console.log('从后端回来的数据', response)
+    // console.log('从后端回来的数据', response)
     if (response.data.success === false) {
       // 抛出错误: 返回一个错误状态的promise
       return Promise.reject(new Error(response.data.message))
@@ -57,7 +57,7 @@ service.interceptors.response.use(
 // 请求拦截器
 service.interceptors.request.use(
   config => {
-    console.log('所有的请求发出去之前，都会走这里', config)
+    // console.log('所有的请求发出去之前，都会走这里', config)
     // console.log(store)
     const token = store.state.user.token
     // 如果有token就带上

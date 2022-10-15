@@ -11,7 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login', '/404', '/abc']
 
 router.beforeEach((to, from, next) => {
-  console.log('beforeEach - 2 ')
+  // console.log('beforeEach - 2 ')
   // 切换标题
   // console.log(to)
   // document.title = to.meta.title + 'xxxxx系统'
@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.beforeEach(async(to, from, next) => {
-  console.log('beforeEach - 1 ')
+  // console.log('beforeEach - 1 ')
   NProgress.start()
   // 1. 如果有token&&去登录页            ===> 让它去主页
   // 2. 如果没有token && 去的不是登录     ===> 去登录页

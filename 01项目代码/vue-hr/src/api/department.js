@@ -15,3 +15,11 @@ export const addDepartment = function(data) {
 export const delDepartment = function(id) {
   return request.delete('/company/department/' + id)
 }
+
+export const getDepartDetail = function(id) {
+  return request.get('/company/department/' + id)
+}
+
+export const updateDepartment = function(data) {
+  return request.put('/company/department/' + data.id, data)
+}

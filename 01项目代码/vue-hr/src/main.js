@@ -1,4 +1,4 @@
-console.log('环境变量集合', process.env)
+// console.log('环境变量集合', process.env)
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets

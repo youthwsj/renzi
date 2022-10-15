@@ -118,20 +118,20 @@ export default {
     // 名字(context, 参数){ }
     async userLogin(context, data) {
       const res = await login(data)
-      console.log('token', res.data)
+      // console.log('token', res.data)
       // 调用mutation保存token
       context.commit('setToken', res.data)
     },
 
     // 获取用户的信息
     async getUserInfo(context) {
-      console.log('action getUserInfo')
+      // console.log('action getUserInfo')
       // 1. 发请求- 请求基本信息
       const res = await getProfile()
-      console.log('获取用户的信息ID', res.data.userId)
+      // console.log('获取用户的信息ID', res.data.userId)
       // 2. 发请求- 请求详细信息（头像）
       const res2 = await getUserDetailById(res.data.userId)
-      console.log('res2:----------', res2.data)
+      // console.log('res2:----------', res2.data)
       // 3. 保存到state
       context.commit('setUserInfo', { ...res.data, ...res2.data })
     }
