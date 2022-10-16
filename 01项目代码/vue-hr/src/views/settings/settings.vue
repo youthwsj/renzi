@@ -11,12 +11,12 @@
                 icon="el-icon-plus"
                 size="small"
                 type="primary"
-                @click="showDialog=!showDialog"
+                @click="doAdd()"
               >新增角色</el-button>
             </el-row>
             <!-- 新增角色的弹框 -->
             <el-dialog
-              title="编辑弹层"
+              :title="isEdit?'编辑角色':'添加角色'"
               :close-on-click-modal="false"
               :close-on-press-escape="false"
               :visible.sync="showDialog"
@@ -45,7 +45,7 @@
               <el-table-column label="操作">
                 <template v-slot="scope">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button size="small" type="primary" @click="hEdit(scope.row)">编辑</el-button>
                   <el-button size="small" type="danger" @click="delRoles(scope.row.id)">删除</el-button>
                 </template>
               </el-table-column>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { getRoles, loadDelRoles, addRoles } from '@/api/settings'
+import { getRoles, loadDelRoles, addRoles, editRoles } from '@/api/settings'
 export default {
   data() {
     return {
@@ -87,10 +87,13 @@ export default {
         name: '',
         description: ''
       },
+      // 表单校验规则
       rules: {
         name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
         description: [{ required: true, message: '描述不能为空', trigger: 'blur' }]
-      }
+      },
+      // 编辑或添加选择框
+      isEdit: false
     }
   },
   created() {
@@ -145,23 +148,44 @@ export default {
       }
       this.loadRoles()
     },
-    // 角色弹窗确定按钮
+    // 选择确认按钮
     hSubmit() {
-      this.doAdd(this.roleForm)
+      this.isEdit ? this.doEdit() : this.hadd()
     },
-    // 角色添加按钮
-    async doAdd(data) {
-      const res = await addRoles(data)
-      // 成功让总页数加一
+    // 添加
+    doAdd() {
+      this.showDialog = !this.showDialog
+      this.isEdit = false
+    },
+    // 添加确认按钮
+    async hadd() {
+      const res = await addRoles(this.roleForm)
+      console.log('添加成员返回值', res)
       this.total++
       this.showDialog = !this.showDialog
+      this.$message.success('添加成功')
+      // 成功让总页数加一
       this.endlist()
       this.loadRoles()
-      console.log('添加成员返回值', res)
     },
-    // 让查询变成最后一页
+    // 跳转最后一页
     endlist() {
       this.pageParams.page = Math.ceil(this.total / this.pageParams.pagesize)
+    },
+    // 编辑
+    hEdit(row) {
+      console.log(row)
+      this.showDialog = !this.showDialog
+      this.roleForm = { ...row }
+      this.isEdit = true
+    },
+    // 编辑确认按钮
+    async doEdit() {
+    // 调用发送函数
+      const res = await editRoles(this.roleForm)
+      console.log(res)
+      this.showDialog = !this.showDialog
+      this.loadRoles()
     }
   }
 }

@@ -1,0 +1,40 @@
+<template>
+  <el-card>
+    <div class="page-tools">
+      <!-- 左侧 -->
+      <div class="left">
+        <div class="tips">
+          <i class="el-icon-info" />
+          <slot name="left">默认左侧区域</slot>
+        </div>
+      </div>
+      <div class="right">
+        <!-- 右侧 -->
+        <slot name="right">默认右侧区域</slot>
+      </div>
+    </div>
+  </el-card>
+</template>
+
+<script>
+export default {}
+</script>
+
+<style lang="scss" scoped>
+.page-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .tips {
+    line-height: 34px;
+    padding: 0px 15px;
+    border-radius: 5px;
+    border: 1px solid rgba(145, 213, 255, 1);
+    background: rgba(230, 247, 255, 1);
+    i {
+      margin-right: 10px;
+      color: #409eff;
+    }
+  }
+}
+</style>

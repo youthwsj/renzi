@@ -14,6 +14,11 @@ export const loadDelRoles = function(id) {
 // 添加员工数据
 // 参数 name 和description
 export const addRoles = function(data) {
-  return request.post('/sys/role/', data)
+  return request.post('/sys/role', data)
 }
 
+// 修改员工数据
+// 参数 name 和description和 id
+export const editRoles = function(data) {
+  return request.put('/sys/role/' + data.id, data)
+}
