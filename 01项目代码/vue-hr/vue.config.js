@@ -41,8 +41,9 @@ module.exports = {
       // 当我们请求: http://localhost:3003/api/getinfo 地址时
       // 会自动被转发到： http://192.168.88.141:3000/api/getinfo
       '/api': {
-        target: 'http://192.168.88.202:3000'
+        // target: 'http://192.168.88.202:3000'
         // target: 'http://ihrm-java.itheima.net'
+        target: 'http://192.168.88.223:3000'
       }
     }
     // before: require('./mock/mock-server.js')
