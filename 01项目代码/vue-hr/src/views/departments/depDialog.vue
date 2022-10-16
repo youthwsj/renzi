@@ -18,7 +18,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="introduce" label="部门介绍" label-width="100px">
-        <el-input v-model="form.introduce" />
+        <el-input v-model="form.introduce" type="textarea" />
       </el-form-item>
 
       <el-form-item>
@@ -87,12 +87,12 @@ export default {
       rules: {
         name: [
           { required: true, message: '部门名称不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' },
+          { min: 2, max: 50, message: '部门名称要求2-50个字符', trigger: 'blur' },
           { validator: validName, trigger: 'blur' }
         ],
         code: [
           { required: true, message: '部门编码不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: 'blur' },
+          { min: 2, max: 50, message: '部门编码要求2-50个字符', trigger: 'blur' },
           { validator: validCode, trigger: 'blur' }
         ],
         manager: [
@@ -100,7 +100,7 @@ export default {
         ],
         introduce: [
           { required: true, message: '部门介绍不能为空', trigger: 'blur' },
-          { min: 1, max: 300, message: '部门介绍要求1-300个字符', trigger: 'blur' }
+          { min: 10, max: 300, message: '部门介绍要求10-300个字符', trigger: 'blur' }
         ]
       },
       form: {
@@ -113,16 +113,15 @@ export default {
     }
   },
   watch: {
-    'pid': {
-      handler: async function(newl, oldv) {
-        console.log('新值', newl, '旧值', oldv)
-        if (this.isEdit) {
-          await this.loadgetDepartDetail()
-        }
-      },
-      immediate: true
-    }
-
+    // 'pid': {
+    //   handler: async function(newl, oldv) {
+    //     console.log('新值', newl, '旧值', oldv)
+    //     if (this.isEdit) {
+    //       await this.loadgetDepartDetail()
+    //     }
+    //   },
+    //   immediate: true
+    // }
   },
   created() {
     this.loadSimpleEmployee()

@@ -11,7 +11,8 @@
           style="height: 40px"
         >
           <el-col :span="20">
-            <svg-icon icon-class="bank" /><span>江苏传智播客教育科技股份有限公司</span>
+            <svg-icon icon-class="bank" />
+            <span>威龙食品</span>
           </el-col>
           <el-col :span="4">
             <el-row type="flex" justify="end">
@@ -32,7 +33,7 @@
           </el-col>
         </el-row>
         <!-- 主体 -->
-        <el-tree :data="list" default-expand-all>
+        <el-tree icon-class="list" :data="list" default-expand-all>
           <template v-slot="scope">
             <el-row
               type="flex"
@@ -41,7 +42,7 @@
               style="height: 40px; width: 100%"
             >
               <el-col :span="20">
-                <svg-icon icon-class="bank" /><span>{{ scope.data.name }}</span>
+                <span>{{ scope.data.name }}</span>
               </el-col>
               <el-col :span="4">
                 <el-row type="flex" justify="end">
@@ -184,11 +185,11 @@ export default {
       // 4.赋值当前内容
       this.item = data
       // 解决点击不更新修改数据的bug
-      // this.$nextTick(() => {
-      // console.log('找子组件', this.$refs.showDialog)
-      // 通过子组件获取信息列表
-      // this.$refs.deptDialog.loadgetDepartDetail()
-      // })
+      this.$nextTick(() => {
+        console.log('找子组件', this.$refs.showDialog)
+        // 通过子组件获取信息列表
+        this.$refs.refDeptDialog.loadgetDepartDetail()
+      })
     },
     // 添加部门
     hAdd(id) {

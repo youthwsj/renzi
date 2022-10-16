@@ -3,7 +3,7 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <div class="app-breadcrumb">
-      江苏传智播客教育科技股份有限公司
+      江苏伟龙教育科技股份有限公司
       <span class="breadBtn">体验版</span>
     </div>
 
@@ -20,7 +20,7 @@
           -->
           <img :src="$store.state.user.userInfo.staffPhoto" class="user-avatar">
           <span class="name">{{ $store.state.user.userInfo.username }}</span>
-          <span class="name">{{ name }}</span>
+          <!-- <span class="name">{{ name }}</span> -->
           <i class="el-icon-caret-bottom user-dropdown" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
