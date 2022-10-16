@@ -42,6 +42,8 @@
               style="height: 40px; width: 100%"
             >
               <el-col :span="20">
+                <svg-icon v-if="scope.data.children.length!==0" :icon-class="scope.node.expanded?'jianhao':'jiahao'" />
+                <!-- <svg-icon v-else-if="!scope.node.expanded&&scope.data.children.length!==0" icon-class="jiahao" /> -->
                 <span>{{ scope.data.name }}</span>
               </el-col>
               <el-col :span="4">

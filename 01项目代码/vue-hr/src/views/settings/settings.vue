@@ -39,7 +39,7 @@
             </el-dialog>
             <!-- 表格区域 -->
             <el-table :data="roles">
-              <el-table-column label="序号" width="120" type="index" />
+              <el-table-column label="序号" width="120" type="index" :index="indexMethod" />
               <el-table-column label="角色名称" width="240" prop="name" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
@@ -120,7 +120,6 @@ export default {
       // 2. 重发请求
       this.loadRoles()
     },
-
     // 删除请求确认框
     delRoles(id) {
       // 确认框
@@ -186,6 +185,9 @@ export default {
       console.log(res)
       this.showDialog = !this.showDialog
       this.loadRoles()
+    },
+    indexMethod(index) {
+      return (index + 1) + (this.pageParams.page - 1) * this.pageParams.pagesize
     }
   }
 }

@@ -16,10 +16,9 @@
   </div>
 </template>
 <script>
-import Pagetools from '@/components/Pagetools'
 export default {
   components: {
-    Pagetools
+
   },
   data() {
     return {
