@@ -7,7 +7,7 @@ export default {
       path: '',
       name: 'social_securitys',
       component: () => import('@/views/social_securitys/social_securitys.vue'),
-      meta: { title: '社保', icon: 'form' }
+      meta: { title: '社保', icon: 'table' }
     }
   ]
 }

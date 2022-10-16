@@ -7,7 +7,7 @@ export default {
       path: '',
       name: 'salarys',
       component: () => import('@/views/salarys/salarys.vue'),
-      meta: { title: '工资', icon: 'form' }
+      meta: { title: '工资', icon: 'nested' }
     }
   ]
 }

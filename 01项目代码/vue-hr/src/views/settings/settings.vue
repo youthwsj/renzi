@@ -29,7 +29,13 @@
             <!-- 分页组件 -->
             <el-row type="flex" justify="center" align="middle" style="height: 60px">
               <!-- 分页组件 -->
-              <el-pagination layout="prev,pager,next" />
+              <el-pagination
+                layout="prev,pager,next"
+                :page-size="pageParams.pagesize"
+                :total="total"
+                background
+                @current-change="hCurrentChange"
+              />
             </el-row>
           </el-tab-pane>
 
@@ -44,7 +50,12 @@ import { getRoles } from '@/api/settings'
 export default {
   data() {
     return {
-      roles: []
+      roles: [],
+      pageParams: {
+        page: 1, // 查询第一页
+        pagesize: 2 // 每页两条  --- 要与pagination中page-size一致
+      },
+      total: 0
     }
   },
   created() {
@@ -55,12 +66,21 @@ export default {
     async loadRoles() {
       try {
         // 此处不传值也能接收到???
-        const res = await getRoles({ page: 1, pagesize: 10 })
+        const res = await getRoles(this.pageParams)
         console.log('角色管理列表', res)
         this.roles = res.data.rows
+        this.total = res.data.total
       } catch (error) {
         console.log(error)
       }
+    },
+    // 切换分页显示
+    hCurrentChange(curPage) {
+      // alert(curPage)
+      // 1. 更新页码
+      this.pageParams.page = curPage
+      // 2. 重发请求
+      this.loadRoles()
     }
   }
 }

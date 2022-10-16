@@ -9,7 +9,7 @@ export default {
       component: () => import('@/views/approvals/approvals.vue'),
       // meta是vue路由对象的一部分
       // 它的值就是一个对象
-      meta: { title: '审批', icon: 'tree-table', a: 1, b: 2 }
+      meta: { title: '审批', icon: 'example', a: 1, b: 2 }
     }
   ]
 }

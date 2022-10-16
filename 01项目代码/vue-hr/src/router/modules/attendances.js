@@ -7,7 +7,7 @@ export default {
       path: '',
       name: 'attendances',
       component: () => import('@/views/attendances/attendances.vue'),
-      meta: { title: '考勤', icon: 'el-icon-eleme' }
+      meta: { title: '考勤', icon: 'eye-open' }
     }
   ]
 }
