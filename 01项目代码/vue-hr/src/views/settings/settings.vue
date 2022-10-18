@@ -32,7 +32,7 @@
               <!-- 底部 -->
               <el-row slot="footer" type="flex" justify="center">
                 <el-col :span="6">
-                  <el-button size="small">取消</el-button>
+                  <el-button size="small" @click="showDialog=false;roleForm=''">取消</el-button>
                   <el-button size="small" type="primary" @click="hSubmit">确定</el-button>
                 </el-col>
               </el-row>
@@ -78,7 +78,7 @@ export default {
       roles: [],
       pageParams: {
         page: 1, // 查询的页数
-        pagesize: 2 // 每页条数  --- 要与pagination中page-size一致
+        pagesize: 10 // 每页条数  --- 要与pagination中page-size一致
       },
       total: 0,
       // 新增弹窗
@@ -138,7 +138,6 @@ export default {
     async doDel(id) {
       const res = await loadDelRoles(id)
       console.log(res)
-
       // 判断删除的是否是当前最后一条数据
       // 2. 重发请求
       if (this.roles.length <= 1) {
@@ -186,6 +185,7 @@ export default {
       this.showDialog = !this.showDialog
       this.loadRoles()
     },
+    // 页码不清零
     indexMethod(index) {
       return (index + 1) + (this.pageParams.page - 1) * this.pageParams.pagesize
     }

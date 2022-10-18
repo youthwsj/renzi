@@ -34,7 +34,7 @@
         </el-row>
         <!-- 主体 -->
         <el-tree icon-class="list" :data="list" default-expand-all>
-          <template v-slot="scope">
+          <template v-slot="{data,node}">
             <el-row
               type="flex"
               justify="space-between"
@@ -42,27 +42,27 @@
               style="height: 40px; width: 100%"
             >
               <el-col :span="20">
-                <svg-icon v-if="scope.data.children.length!==0" :icon-class="scope.node.expanded?'jianhao':'jiahao'" />
+                <svg-icon v-if="data.children.length" :icon-class="node.expanded?'jianhao':'jiahao'" />
                 <!-- <svg-icon v-else-if="!scope.node.expanded&&scope.data.children.length!==0" icon-class="jiahao" /> -->
-                <span>{{ scope.data.name }}</span>
+                <span>{{ data.name }}</span>
               </el-col>
               <el-col :span="4">
                 <el-row type="flex" justify="end">
                   <!-- 两个内容 -->
-                  <el-col>{{ scope.data.manager }}</el-col>
+                  <el-col>{{ data.manager }}</el-col>
                   <!-- 下拉菜单 element -->
                   <el-col>
                     <el-dropdown>
                       <span> 操作<i class="el-icon-arrow-down" /> </span>
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item
-                          @click.native="hAdd(scope.data.id)"
+                          @click.native="hAdd(data.id)"
                         >添加子部门</el-dropdown-item>
                         <el-dropdown-item
-                          @click.native="hEDit(scope.data)"
+                          @click.native="hEDit(data)"
                         >编辑部门</el-dropdown-item>
                         <el-dropdown-item
-                          @click.native="hDel(scope.data.id)"
+                          @click.native="hDel(data.id)"
                         >删除部门</el-dropdown-item>
                       </el-dropdown-menu>
                     </el-dropdown>

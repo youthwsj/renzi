@@ -161,7 +161,7 @@ export function array2Tree(arr, pid) {
   // { 'id': '2c', 'pid': '',     'name': '财务部' },
   // { 'id': 'd2', 'pid': '',     'name': '技术部'},
   tree.forEach(item => {
-    item.children = array2Tree(arr, item.id)
+    item.children = array2Tree(arr, item.id) || undefined
   })
 
   return tree
