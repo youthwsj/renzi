@@ -9,10 +9,6 @@ export default {
     {
       id: 2,
       value: '非正式'
-    },
-    {
-      id: 3,
-      value: '临时'
     }
   ],
   // 管理形式

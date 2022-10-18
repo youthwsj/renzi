@@ -3,19 +3,23 @@
     <div class="app-container">
       <!-- 头部公共组件 -->
       <Pagetools>
-        <template #left>
-          总记录条数:20
-        </template>
+        <template #left> 总记录条数:20 </template>
         <template #right>
-          <el-button type="primary" size="medium">导入excel</el-button>
+          <el-button type="primary" size="medium" @click="$router.push('/import')">
+            导入excel
+          </el-button>
           <el-button type="success" size="medium">导出excel</el-button>
-          <el-button type="warning" size="medium" @click="hAdd()">新增员工</el-button>
+          <el-button
+            type="warning"
+            size="medium"
+            @click="hAdd()"
+          >新增员工</el-button>
         </template>
       </Pagetools>
       <!-- 表格区域 -->
       <el-card>
         <!-- 具体页面结构 -->
-        <el-table border :data="list" :default-sort="{prop:'workNumber'}">
+        <el-table border :data="list" :default-sort="{ prop: 'workNumber' }">
           <el-table-column label="序号" type="index" :index="indexMethod" />
           <el-table-column label="姓名" prop="username" />
           <el-table-column label="工号" prop="workNumber" />
@@ -30,12 +34,21 @@
             <template v-slot="scope">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">分配角色</el-button>
-              <el-button type="text" size="small" @click="delp(scope.row.id)">删除</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="delp(scope.row.id)"
+              >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页组件 -->
-        <el-row type="flex" justify="center" align="middle" style="height: 60px">
+        <el-row
+          type="flex"
+          justify="center"
+          align="middle"
+          style="height: 60px"
+        >
           <el-pagination
             :current-page="page"
             :page-sizes="[2, 5, 8, 10]"
@@ -54,26 +67,25 @@
         :visible.sync="showdialog"
         :close-on-click-modal="false"
       >
-        <EmpDialog
-          @close="showdialog=false"
-        />
+        <EmpDialog @success="addSuccess" @close="showdialog = false" />
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-
 import { getEmployees, delEmployee } from '@/api/employees'
 // 引入枚举
 import EmployeesEnum from '@/constant/employees'
 // 引入子组件
 import EmpDialog from '@/views/employees/empDialog.vue'
+
 const EMPLOYEES = EmployeesEnum.hireType.reduce((num, item, index) => {
   num[item.id] = item.value
-  console.log('第一个参数', num, '第二个参数', item, '第三个参数下标', index)
+  // console.log('第一个参数', num, '第二个参数', item, '第三个参数下标', index)
   return num
 }, {})
+
 export default {
   components: {
     EmpDialog
@@ -131,8 +143,7 @@ export default {
           // 删除操作
           this.doDel(id)
         })
-        .catch(() => {
-        })
+        .catch(() => {})
     },
     // 删除调用api
     async doDel(id) {
@@ -161,8 +172,16 @@ export default {
     hAdd() {
       this.showdialog = true
     },
+    // 序号连续
     indexMethod(index) {
-      return (index + 1) + (this.page - 1) * this.size
+      return index + 1 + (this.page - 1) * this.size
+    },
+    // 新增成功
+    addSuccess() {
+      this.showdialog = false
+      this.total++
+      this.page = Math.ceil(this.total / this.size)
+      this.loadEmployees()
     }
   }
 }

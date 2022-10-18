@@ -16,3 +16,13 @@ export function delEmployee(id) {
     url: `/sys/user/${id}`
   })
 }
+// 增加员工
+export const addEmployees = function(data) {
+  return request.post('/sys/user', data)
+}
+
+// 批量导入员工
+
+export const addDatchEmployees = function(data) {
+  return request.post('/sys/user/batch', data)
+}

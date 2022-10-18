@@ -35,6 +35,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/settings'
 import socialRouter from './modules/social_securitys'
+import Import from './modules/import'
 
 export const asyncRoutes = [
   departmentsRouter,
@@ -44,7 +45,8 @@ export const asyncRoutes = [
   approvalsRouter,
   attendancesRouter,
   salarysRouter,
-  socialRouter
+  socialRouter,
+  Import
 ]
 
 // 静态路由表
@@ -54,13 +56,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -72,7 +72,6 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

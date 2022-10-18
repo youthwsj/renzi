@@ -203,6 +203,7 @@ export default {
       // 3.区分添加和编辑
       this.isEdit = false
     },
+    // 获取部门
     async loadDepartments() {
       const res = await getDepartments()
       res.data.depts.shift()
