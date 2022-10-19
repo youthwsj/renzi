@@ -8,20 +8,17 @@ export function login(data) {
   // 之前
   // axios.get('接口地址', { params: { 参数 }})
   // axios.post('接口地址', { 参数 })
-
   // 现在
   // axios的实例({
   //   url: '接口地址',
   //   method: '请求方式 post ',
   //   data: { 参数 }
   // })
-
   // axios的实例({
   //   url: '接口地址',
   //   method: '请求方式 get ',
   //   params: { 参数 }
   // })
-
   return request.post('/sys/login', data)
   // return request({
   //   url: '/vue-admin-template/user/login',
@@ -44,6 +41,11 @@ export function logout() {
 
 }
 
+// 更新用户信息
+// 获取用户的详细电话信息
+export function saveUserDetailById(data) {
+  return request.put('/sys/user/' + data.id, data)
+}
 // 导出有两种
 // 1. 按需导出                     导入
 //  export function xxx(){}       import { xxx } from ''

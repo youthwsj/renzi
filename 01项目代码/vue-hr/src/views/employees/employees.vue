@@ -79,7 +79,8 @@ import { getEmployees, delEmployee } from '@/api/employees'
 import EmployeesEnum from '@/constant/employees'
 // 引入子组件
 import EmpDialog from '@/views/employees/empDialog.vue'
-
+// 转换时间
+import { converTimeOfHMS } from '@/utils/index'
 const EMPLOYEES = EmployeesEnum.hireType.reduce((num, item, index) => {
   num[item.id] = item.value
   // console.log('第一个参数', num, '第二个参数', item, '第三个参数下标', index)
@@ -189,10 +190,10 @@ export default {
       import('@/vendor/Export2Excel').then(async excel => {
         //  1.拿数据
         const res = await getEmployees({ page: this.page, size: this.size })
-        console.log(res)
+        // console.log(res)
         // 2.转换数据
         const { header, data } = this.tranformData(res.data.rows)
-        console.log(header, data)
+        // console.log(header, data)
         excel.export_json_to_excel({
           header, // 表头 必填
           data, // 具体数据 必填
@@ -204,14 +205,42 @@ export default {
     },
     // 转换导出数据
     tranformData(rows) {
+      // 把表头转换为中文
       const header = Object.keys(rows[0])
+      const mapInfo = {
+        入职日期: 'timeOfEntry',
+        手机号: 'mobile',
+        姓名: 'username',
+        转正日期: 'correctionTime',
+        工号: 'workNumber',
+        部门: 'departmentName',
+        聘用形式: 'formOfEmployment'
+      }
+      // 中文表头
+      const zhheader = []
+      header.forEach(item => {
+        for (const key in mapInfo) {
+          if (mapInfo[key] === item) {
+            zhheader.push(key)
+          }
+        }
+      })
+
+      // console.log('英文数组', zhheader, header)
+      // 筛选表头对应的数据
       const data = rows.map(item => {
-        return header.map(ele => {
-          return item[ele]
+        return zhheader.map(ele => {
+          const infoele = mapInfo[ele]
+          if (infoele === 'formOfEmployment') {
+            item[infoele] = EMPLOYEES[ item[infoele]] || '未知'
+          } else if (infoele === 'correctionTime' || infoele === 'timeOfEntry') {
+            item[infoele] = converTimeOfHMS(item[infoele])
+          }
+          return item[infoele]
         })
       })
       return {
-        header, data
+        header: zhheader, data
       }
     }
   }

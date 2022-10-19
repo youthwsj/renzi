@@ -180,3 +180,7 @@ export function formatExcelDate(numb, format = '/') {
   return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
 }
 
+// 标准时间转换横杠
+export function converTimeOfHMS(date) {
+  return new Date(date).toISOString().slice(0, 10)
+}
