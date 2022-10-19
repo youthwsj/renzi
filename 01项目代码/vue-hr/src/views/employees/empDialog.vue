@@ -138,6 +138,10 @@ export default {
         this.formData.departmentName = data.name
         this.showtree = false
       }
+    },
+    // 去清空表单
+    resetForm() {
+      this.$refs.addForm.resetFields()
     }
   }
 }

@@ -35,7 +35,6 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/settings'
 import socialRouter from './modules/social_securitys'
-import Import from './modules/import'
 
 export const asyncRoutes = [
   departmentsRouter,
@@ -45,8 +44,7 @@ export const asyncRoutes = [
   approvalsRouter,
   attendancesRouter,
   salarysRouter,
-  socialRouter,
-  Import
+  socialRouter
 ]
 
 // 静态路由表
@@ -73,7 +71,19 @@ export const constantRoutes = [
     }]
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'import',
+        component: () => import('@/views/import/index.vue')
+      }
+    ]
+  }
 ]
 
 const createRouter = () => new Router({

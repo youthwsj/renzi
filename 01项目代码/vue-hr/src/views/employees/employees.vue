@@ -8,7 +8,7 @@
           <el-button type="primary" size="medium" @click="$router.push('/import')">
             导入excel
           </el-button>
-          <el-button type="success" size="medium">导出excel</el-button>
+          <el-button type="success" size="medium" @click="onclick">导出excel</el-button>
           <el-button
             type="warning"
             size="medium"
@@ -32,7 +32,7 @@
           <el-table-column label="入职时间" prop="timeOfEntry" sortable />
           <el-table-column label="操作" width="280">
             <template v-slot="scope">
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" @click="$router.push('/employees/detail?id='+scope.row.id)">查看</el-button>
               <el-button type="text" size="small">分配角色</el-button>
               <el-button
                 type="text"
@@ -67,7 +67,7 @@
         :visible.sync="showdialog"
         :close-on-click-modal="false"
       >
-        <EmpDialog @success="addSuccess" @close="showdialog = false" />
+        <EmpDialog ref="epmson" @success="addSuccess" @close="showdialog = false;$refs.epmson.resetForm()" />
       </el-dialog>
     </div>
   </div>
@@ -179,9 +179,40 @@ export default {
     // 新增成功
     addSuccess() {
       this.showdialog = false
+      this.$refs.epmson.resetForm()
       this.total++
       this.page = Math.ceil(this.total / this.size)
       this.loadEmployees()
+    },
+    // 导出Excel
+    onclick() {
+      import('@/vendor/Export2Excel').then(async excel => {
+        //  1.拿数据
+        const res = await getEmployees({ page: this.page, size: this.size })
+        console.log(res)
+        // 2.转换数据
+        const { header, data } = this.tranformData(res.data.rows)
+        console.log(header, data)
+        excel.export_json_to_excel({
+          header, // 表头 必填
+          data, // 具体数据 必填
+          filename: 'excel-list', // 文件名称
+          autoWidth: true, // 宽度是否自适应
+          bookType: 'xlsx' // 生成的文件类型
+        })
+      })
+    },
+    // 转换导出数据
+    tranformData(rows) {
+      const header = Object.keys(rows[0])
+      const data = rows.map(item => {
+        return header.map(ele => {
+          return item[ele]
+        })
+      })
+      return {
+        header, data
+      }
     }
   }
 }
