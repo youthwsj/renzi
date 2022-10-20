@@ -62,6 +62,7 @@
                           @click.native="hEDit(data)"
                         >编辑部门</el-dropdown-item>
                         <el-dropdown-item
+                          v-if="data.children.length===0"
                           @click.native="hDel(data.id)"
                         >删除部门</el-dropdown-item>
                       </el-dropdown-menu>
@@ -112,34 +113,6 @@ export default {
       isEdit: '',
       // 依赖一份树形数据
       list: [
-        {
-          name: '财务部',
-          manager: '刘备',
-          children: [
-            {
-              name: '财务核算部',
-              manager: '张飞'
-            },
-            {
-              name: '税务核算部',
-              manager: '关羽'
-            }
-          ]
-        },
-        {
-          name: '财务部',
-          manager: '刘备',
-          children: [
-            {
-              name: '财务核算部',
-              manager: '张飞'
-            },
-            {
-              name: '税务核算部',
-              manager: '关羽'
-            }
-          ]
-        }
       ],
       originList: []
     }
