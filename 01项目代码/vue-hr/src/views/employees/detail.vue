@@ -22,7 +22,6 @@
 import JobInfo from '@/views/employees/components/job-info.vue'
 import LoginSetting from '@/views/employees/components/login-setting.vue'
 import UserInfo from '@/views/employees/components/user-info.vue'
-import { getUserDetailById } from '@/api/user'
 export default {
   components: {
     JobInfo,
@@ -31,18 +30,6 @@ export default {
   },
   data() {
     return {
-      data: '',
-      created() {
-        this.loadUserDetailById()
-      },
-      methods: {
-        async loadUserDetailById() {
-          const res = await getUserDetailById(this.userId)
-          console.log(res)
-          const { mobile, timeOfEntry } = res.data
-          this.userInfo = { mobile, timeOfEntry }
-        }
-      }
     }
   }
 }

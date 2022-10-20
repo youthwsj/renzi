@@ -44,9 +44,9 @@ module.exports = {
         // 有福
         // target: 'http://192.168.88.202:3000'
         // 阿亮
-        target: 'http://192.168.88.245:3000'
+        // target: 'http://192.168.88.245:3000'
         // 在线
-        // target: 'http://ihrm-java.itheima.net'
+        target: 'http://ihrm-java.itheima.net'
       }
     }
     // before: require('./mock/mock-server.js')

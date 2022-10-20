@@ -42,10 +42,10 @@ export function logout() {
 }
 
 // 更新用户信息
-// 获取用户的详细电话信息
 export function saveUserDetailById(data) {
   return request.put('/sys/user/' + data.id, data)
 }
+
 // 导出有两种
 // 1. 按需导出                     导入
 //  export function xxx(){}       import { xxx } from ''

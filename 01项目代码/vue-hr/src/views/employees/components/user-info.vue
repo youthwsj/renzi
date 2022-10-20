@@ -1,16 +1,18 @@
 <template>
   <div class="user-info">
     <!-- 个人信息 -->
-    <el-form label-width="220px">
+    <el-form
+      ref="userForm"
+      label-width="220px"
+      :rules="rules"
+      :model="userInfo"
+    >
       <!--手机 -->
-
       <el-form-item label="手机">
         <el-input v-model="userInfo.mobile" disabled style="width:220px" />
       </el-form-item>
-
       <!-- 工号 入职时间 -->
-
-      <el-form-item label="入职时间">
+      <el-form-item label="入职时间" prop="timeOfEntry">
         <el-date-picker
           v-model="userInfo.timeOfEntry"
           type="date"
@@ -47,6 +49,9 @@ export default {
         mobile: '',
         timeOfEntry: '',
         staffPhoto: ''
+      },
+      rules: {
+        timeOfEntry: [{ required: true, message: '请选择入职时间', triggler: 'blur' }]
       }
     }
   },
@@ -67,7 +72,11 @@ export default {
     },
     // 更新按钮
     hSave() {
-      this.doSave()
+      this.$refs.userForm.validate(valid => {
+        if (valid) {
+          this.doSave()
+        }
+      })
     },
     // 调用接口
     async doSave() {

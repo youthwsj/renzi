@@ -29,7 +29,11 @@
             </template>
           </el-table-column>
           <el-table-column label="部门" prop="departmentName" />
-          <el-table-column label="入职时间" prop="timeOfEntry" sortable />
+          <el-table-column label="入职时间">
+            <template v-slot="scope">
+              {{ tranTime(scope.row.timeOfEntry) }}
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="280">
             <template v-slot="scope">
               <el-button type="text" size="small" @click="$router.push('/employees/detail?id='+scope.row.id)">查看</el-button>
@@ -62,6 +66,7 @@
       </el-card>
       <!-- 信息弹框子组件 -->
       <el-dialog
+        :before-close="handleClose"
         width="500px"
         title="新增"
         :visible.sync="showdialog"
@@ -100,10 +105,17 @@ export default {
       showdialog: false
     }
   },
+  computed: {
+
+  },
   created() {
     this.loadEmployees()
   },
   methods: {
+    // 转换时间
+    tranTime(data) {
+      return converTimeOfHMS(data)
+    },
     // 加载页面数据
     async loadEmployees() {
       const res = await getEmployees({ page: this.page, size: this.size })
@@ -185,6 +197,11 @@ export default {
       this.page = Math.ceil(this.total / this.size)
       this.loadEmployees()
     },
+    // 右上角关闭前函数
+    handleClose() {
+      this.$refs.epmson.resetForm()
+      this.showdialog = false
+    },
     // 导出Excel
     onclick() {
       import('@/vendor/Export2Excel').then(async excel => {
@@ -206,7 +223,7 @@ export default {
     // 转换导出数据
     tranformData(rows) {
       // 把表头转换为中文
-      const header = Object.keys(rows[0])
+      // const header = Object.keys(rows[0])
       const mapInfo = {
         入职日期: 'timeOfEntry',
         手机号: 'mobile',
@@ -216,16 +233,17 @@ export default {
         部门: 'departmentName',
         聘用形式: 'formOfEmployment'
       }
+      console.log(rows)
       // 中文表头
-      const zhheader = []
-      header.forEach(item => {
-        for (const key in mapInfo) {
-          if (mapInfo[key] === item) {
-            zhheader.push(key)
-          }
-        }
-      })
-
+      // const zhheader = []
+      // header.forEach(item => {
+      //   for (const key in mapInfo) {
+      //     if (mapInfo[key] === item) {
+      //       zhheader.push(key)
+      //     }
+      //   }
+      // })
+      const zhheader = Object.keys(mapInfo)
       // console.log('英文数组', zhheader, header)
       // 筛选表头对应的数据
       const data = rows.map(item => {
