@@ -19,9 +19,15 @@
       <!-- 表格区域 -->
       <el-card>
         <!-- 具体页面结构 -->
-        <el-table border :data="list" :default-sort="{ prop: 'workNumber' }">
+        <el-table border :data="list" :default-sort="{ prop: 'index' }">
           <el-table-column label="序号" type="index" :index="indexMethod" />
-          <el-table-column label="姓名" prop="username" />
+          <el-table-column label="姓名" prop="username" sortable />
+          <el-table-column label="头像">
+            <template v-slot="scope">
+              <!-- <img  alt=""> -->
+              <ImageHolder :src="scope.row.staffPhoto" />
+            </template>
+          </el-table-column>
           <el-table-column label="工号" prop="workNumber" />
           <el-table-column label="聘用形式">
             <template v-slot="scope">

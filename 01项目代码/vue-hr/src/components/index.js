@@ -4,11 +4,14 @@ import Pagetools from '@/components/Pagetools'
 import UploadExcel from '@/components/UploadExcel'
 // 全局组件 上传头像
 import UploadImg from '@/components/UploadImg'
+// 全局组件 头像组件
+import ImageHolder from '@/components/ImageHolder'
 export default {
   install(Vue) {
     Vue.component('Pagetools', Pagetools)
     Vue.component('UploadExcel', UploadExcel)
     Vue.component('UploadImg', UploadImg)
+    Vue.component('ImageHolder', ImageHolder)
   }
 }
 
