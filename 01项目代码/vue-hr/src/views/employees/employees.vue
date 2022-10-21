@@ -43,7 +43,7 @@
           <el-table-column label="操作" width="280">
             <template v-slot="scope">
               <el-button type="text" size="small" @click="$router.push('/employees/detail?id='+scope.row.id)">查看</el-button>
-              <el-button type="text" size="small">分配角色</el-button>
+              <el-button type="text" size="small" @click="hAssignRole(scope.row.id)">分配角色</el-button>
               <el-button
                 type="text"
                 size="small"
@@ -80,6 +80,10 @@
       >
         <EmpDialog ref="epmson" @success="addSuccess" @close="showdialog = false;$refs.epmson.resetForm()" />
       </el-dialog>
+      <!-- 分配权限子组件 -->
+      <el-dialog title="选择角色" :visible.sync="showDialogRole">
+        <Assign-role v-if="showDialogRole" :cur-employe-id="curId" @success="hSuccessRole" />
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -92,6 +96,8 @@ import EmployeesEnum from '@/constant/employees'
 import EmpDialog from '@/views/employees/empDialog.vue'
 // 转换时间
 import { converTimeOfHMS } from '@/utils/index'
+// 引入分配角色
+import AssignRole from './assignRole.vue'
 const EMPLOYEES = EmployeesEnum.hireType.reduce((num, item, index) => {
   num[item.id] = item.value
   // console.log('第一个参数', num, '第二个参数', item, '第三个参数下标', index)
@@ -100,7 +106,8 @@ const EMPLOYEES = EmployeesEnum.hireType.reduce((num, item, index) => {
 
 export default {
   components: {
-    EmpDialog
+    EmpDialog,
+    AssignRole
   },
   data() {
     return {
@@ -108,7 +115,9 @@ export default {
       page: 1,
       size: 10,
       total: 0,
-      showdialog: false
+      showdialog: false,
+      showDialogRole: false,
+      curId: ''
     }
   },
   computed: {
@@ -118,6 +127,15 @@ export default {
     this.loadEmployees()
   },
   methods: {
+    // 通知成功
+    hSuccessRole() {
+      this.showDialogRole = false
+    },
+    //  分配角色
+    hAssignRole(id) {
+      this.showDialogRole = true
+      this.curId = id
+    },
     // 转换时间
     tranTime(data) {
       return converTimeOfHMS(data)
@@ -198,7 +216,7 @@ export default {
     // 新增成功
     addSuccess() {
       this.showdialog = false
-      this.$refs.epmson.resetForm()
+      // this.$refs.epmson.resetForm()
       this.total++
       this.page = Math.ceil(this.total / this.size)
       this.loadEmployees()
