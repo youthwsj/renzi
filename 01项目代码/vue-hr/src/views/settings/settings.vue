@@ -105,7 +105,7 @@ export default {
       try {
         // 此处不传值也能接收到???
         const res = await getRoles(this.pageParams)
-        console.log('角色管理列表', res)
+        // console.log('角色管理列表', res)
         this.roles = res.data.rows
         this.total = res.data.total
       } catch (error) {

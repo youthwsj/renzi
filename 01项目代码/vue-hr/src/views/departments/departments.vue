@@ -181,7 +181,7 @@ export default {
       const res = await getDepartments()
       res.data.depts.shift()
       // 根据业务的需要，去掉数组第一个元素
-      // console.log(res.data.depts)
+      console.log(res.data.depts)
       // 渲染数据
       this.list = array2Tree(res.data.depts, '')
       this.originList = res.data.depts.map(({ id, pid, name, code }) => {

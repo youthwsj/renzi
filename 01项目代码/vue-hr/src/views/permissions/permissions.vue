@@ -43,7 +43,6 @@
             </template>
           </el-form-item>
         </el-form>
-
       </el-dialog>
       <!-- 表格 -->
       <el-card>
@@ -57,8 +56,8 @@
           <el-table-column label="操作">
             <template v-slot="scope">
               <el-button v-show="scope.row.type===1" type="text" @click="hadd('2', scope.row.id)">添加</el-button>
-              <el-button type="text" @click="hEdit(scope.row.id)">编辑</el-button>
-              <el-button type="text" @click="hdel(scope.row.id)">删除</el-button>
+              <el-button type="text" @click="hEdit(scope.row.id,scope)">编辑</el-button>
+              <el-button v-if="scope.row.children.length===0" type="text" @click="hdel(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -75,9 +74,42 @@ export default {
 
   },
   data() {
+    // 自定义编码重复验证函数
+    const validCode = (rule, value, callback) => {
+      let codeList = this.initialList.map(item => item.code)
+      console.log(codeList)
+      if (this.isEdit) {
+        // 排除当前的用户值pid
+        codeList = this.initialList.filter(item => item.id !== this.pid).map(item => item.code)
+      }
+      // 判断code是否重复
+      if (codeList.includes(value)) {
+        callback(new Error('标识' + value + '已经存在'))
+      } else {
+        callback()
+      }
+    }
+    // 自定义名称重复验证
+    const validName = (rule, value, callback) => {
+      let nameList = this.initialList.filter(item => item.pid === this.pid).map(item => item.name)
+      // console.log(nameList)
+      if (this.isEdit) {
+        nameList = this.initialList.filter(item => item.pid === this.item.pid && item.id !== this.pid).map(item => item.name)
+        console.log(nameList)
+      }
+      if (nameList.includes(value)) {
+        callback(new Error(`名称${value}已经存在`))
+      } else {
+        callback()
+      }
+    }
     return {
       // 弹窗布尔值
       showDialog: false,
+      // 当前点击id
+      pid: '',
+      // 初始数据
+      initialList: [],
       // 页面表格数据
       list: [],
       // 弹窗数据
@@ -93,23 +125,18 @@ export default {
       isEdit: false,
       // 验证规则
       rules: {
-        name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
-        code: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }],
+        name: [
+          { required: true, message: '角色名称不能为空', trigger: 'blur' },
+          { validator: validName, required: true, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '角色标识不能为空', trigger: 'blur' },
+          { validator: validCode, required: true, trigger: 'blur' }
+        ],
         description: [{ required: true, message: '描述不能为空', trigger: 'blur' }]
       }
     }
   },
-  // watch: {
-  //   showDialog: {
-  //     deep: true,
-  //     immediate: true,
-  //     handler: function(val, oldVal) {
-  //       if (!val) {
-  //         this.$refs.refFormData.resetFields()
-  //       }
-  //     }
-  //   }
-  // },
   created() {
     this.loadPermissionList()
   },
@@ -117,11 +144,14 @@ export default {
     // 获取表格数据
     async loadPermissionList() {
       const res = await getPermissionList()
-      console.log(res)
+      console.log('基本数据', res)
+      this.initialList = res.data
       this.list = array2Tree(res.data, '0')
+      console.log(this.list)
     },
     // 添加表单弹框
     hadd(type, pid) {
+      this.pid = pid
       this.showDialog = true
       this.isEdit = false
       this.formData.pid = pid
@@ -141,7 +171,14 @@ export default {
     },
     // 确认按钮
     hSubmit() {
-      this.isEdit ? this.doEdit() : this.doAdd()
+      this.$refs.refFormData.validate((valid) => {
+        if (valid) {
+          this.isEdit ? this.doEdit() : this.doAdd()
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     // 关闭函数
     doclose() {
@@ -190,7 +227,9 @@ export default {
       }
     },
     // 编辑弹窗 数据回填
-    async hEdit(id) {
+    async hEdit(id, scope) {
+      this.pid = id
+      console.log(scope)
       this.showDialog = true
       this.isEdit = true
       const res = await getPermissionDetail(id)

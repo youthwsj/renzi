@@ -25,7 +25,7 @@
           <el-table-column label="头像">
             <template v-slot="scope">
               <!-- <img  alt=""> -->
-              <ImageHolder :src="scope.row.staffPhoto" />
+              <ImageHolder :src="scope.row.staffPhoto||''" />
             </template>
           </el-table-column>
           <el-table-column label="工号" prop="workNumber" />
