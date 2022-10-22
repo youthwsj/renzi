@@ -100,7 +100,7 @@ export default {
         if (valid) {
           // 做添加
           this.hadd()
-          // this.$emit('close')
+          this.$emit('close')
         }
       })
     },

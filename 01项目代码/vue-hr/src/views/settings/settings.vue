@@ -149,6 +149,10 @@ export default {
     // 选择确认按钮
     hSubmit() {
       this.isEdit ? this.doEdit() : this.hadd()
+      this.roleForm = {
+        name: '',
+        description: ''
+      }
     },
     // 添加
     doAdd() {
