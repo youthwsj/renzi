@@ -48,7 +48,7 @@ module.exports = {
         // 在线
         // target: 'http://ihrm-java.itheima.net'
         // 我的
-        target: 'http://192.168.137.1:3000'
+        target: 'http://192.168.43.91:3000'
       }
     }
     // before: require('./mock/mock-server.js')

@@ -57,7 +57,7 @@
             <template v-slot="scope">
               <el-button v-show="scope.row.type===1" type="text" @click="hadd('2', scope.row.id)">添加</el-button>
               <el-button type="text" @click="hEdit(scope.row.id,scope)">编辑</el-button>
-              <el-button v-if="scope.row.children.length===0" type="text" @click="hdel(scope.row.id)">删除</el-button>
+              <el-button v-if="!scope.row.children||scope.row.children.length===0" type="text" @click="hdel(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
