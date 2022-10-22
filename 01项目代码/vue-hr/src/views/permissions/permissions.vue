@@ -94,7 +94,8 @@ export default {
       let nameList = this.initialList.filter(item => item.pid === this.pid).map(item => item.name)
       // console.log(nameList)
       if (this.isEdit) {
-        nameList = this.initialList.filter(item => item.pid === this.item.pid && item.id !== this.pid).map(item => item.name)
+        const ele = this.initialList.find(item => item.id === this.pid)
+        nameList = this.initialList.filter(item => item.pid === ele.pid && item.id !== this.pid).map(item => item.name)
         console.log(nameList)
       }
       if (nameList.includes(value)) {
