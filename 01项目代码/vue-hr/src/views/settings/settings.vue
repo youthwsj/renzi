@@ -44,7 +44,7 @@
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
                 <template v-slot="scope">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="success" @click="hassign(scope.row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" @click="hEdit(scope.row)">编辑</el-button>
                   <el-button size="small" type="danger" @click="delRoles(scope.row.id)">删除</el-button>
                 </template>
@@ -63,6 +63,18 @@
                 @current-change="hCurrentChange"
               />
             </el-row>
+            <!-- 分配权限弹层 -->
+            <el-dialog
+              title="分配权限"
+              :visible.sync="showAssignDialog"
+              @close="handlerClose"
+            >
+              <Assignpermissions
+                ref="refPerm"
+                :cur-id="curId"
+                @close="hAssignClose"
+              />
+            </el-dialog>
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -72,9 +84,15 @@
 
 <script>
 import { getRoles, loadDelRoles, addRoles, editRoles } from '@/api/settings'
+import Assignpermissions from './assignpermissions.vue'
 export default {
+  components: {
+    Assignpermissions
+  },
   data() {
     return {
+      curId: '',
+      showAssignDialog: false,
       roles: [],
       pageParams: {
         page: 1, // 查询的页数
@@ -100,6 +118,24 @@ export default {
     this.loadRoles()
   },
   methods: {
+    // 关闭弹窗的方法
+    handlerClose() {
+      this.$nextTick(() => {
+        this.$refs.refPerm.resetTree()
+      })
+    },
+    // 分配权限弹层关闭
+    hAssignClose() {
+      this.showAssignDialog = false
+    },
+    // 分配权限
+    hassign(id) {
+      this.curId = id
+      this.showAssignDialog = true
+      this.$nextTick(() => {
+        this.$refs.refPerm.lodaRoleDetail()
+      })
+    },
     // 调用ajax获取员工列表的函数
     async loadRoles() {
       try {

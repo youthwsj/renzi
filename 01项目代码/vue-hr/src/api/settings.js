@@ -32,3 +32,21 @@ export const editRoles = function(data) {
 export const assignRoles = function(data) {
   return request.put('/sys/user/assignRoles', data)
 }
+
+// 获取当前角色权限
+export const getRoleDetail = function(id) {
+  return request.get(`/sys/role/${id}`)
+}
+
+/**
+ * 给角色分配权限
+ * @param {*} data {id:角色id, permIds:[] 所有选中的节点的id组成的数组}
+ * @returns
+ */
+export function assignPerm(data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
+  })
+}

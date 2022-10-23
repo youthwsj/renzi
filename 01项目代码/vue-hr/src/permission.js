@@ -3,6 +3,7 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import getPageTitle from '@/utils/get-page-title'
+import { asyncRoutes } from '@/router/index'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 // 假设这个项目中有 三个页面是不需要token 就可以访问的: /login, /404, /abc
@@ -10,6 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 // 白名单： 不需要登录就可以直接访问的页面集合
 const whiteList = ['/login', '/404', '/abc']
 
+// 网页标题
 router.beforeEach((to, from, next) => {
   // console.log('beforeEach - 2 ')
   // 切换标题
@@ -19,6 +21,7 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+// 前置守卫
 router.beforeEach(async(to, from, next) => {
   // console.log('beforeEach - 1 ')
   NProgress.start()
@@ -38,11 +41,12 @@ router.beforeEach(async(to, from, next) => {
     // if('没有用户信息' && 有token) {
     if (!store.state.user.userInfo.userId && token) {
       await store.dispatch('user/getUserInfo')
+      router.addRoutes(asyncRoutes)
     }
     next()
   }
 })
-
+// 后置守卫
 router.afterEach((to, from) => {
   NProgress.done()
 })

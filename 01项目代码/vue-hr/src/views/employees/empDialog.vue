@@ -100,7 +100,7 @@ export default {
         if (valid) {
           // 做添加
           this.hadd()
-          this.$emit('close')
+          // this.$emit('close') 这里是同步 但是上面是异步 不能直接写
         }
       })
     },
@@ -115,6 +115,7 @@ export default {
         })
         this.$emit('success')
       } catch (error) {
+        console.dir(error)
         this.$message({
           type: 'error',
           message: error

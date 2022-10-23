@@ -36,6 +36,7 @@ import salarysRouter from './modules/salarys'
 import settingRouter from './modules/settings'
 import socialRouter from './modules/social_securitys'
 
+// 动态路由
 export const asyncRoutes = [
   departmentsRouter,
   employeesRouter,
@@ -89,7 +90,7 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()
