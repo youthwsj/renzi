@@ -8,8 +8,9 @@ Vue.use(MyCom)
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
+import directive from '@/Directive'
+Vue.use(directive)
 import '@/styles/index.scss' // global css
 
 import App from './App'

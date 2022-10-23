@@ -85,7 +85,7 @@
 //     })
 //   }
 // }
-
+import { resetRouter } from '@/router'
 import { setToken, getToken } from '@/utils/auth'
 import { login, getProfile, getUserDetailById } from '@/api/user'
 
@@ -113,6 +113,7 @@ export default {
     userLogout(context) {
       context.commit('setToken', '')
       context.commit('setUserInfo', {})
+      resetRouter()
     },
 
     // 名字(context, 参数){ }
@@ -136,6 +137,5 @@ export default {
       context.commit('setUserInfo', { ...res.data, ...res2.data })
     }
   }
-
 }
 

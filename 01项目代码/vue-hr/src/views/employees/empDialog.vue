@@ -113,6 +113,7 @@ export default {
           type: 'success',
           message: res.message
         })
+        // this.$emit('close')
         this.$emit('success')
       } catch (error) {
         console.dir(error)

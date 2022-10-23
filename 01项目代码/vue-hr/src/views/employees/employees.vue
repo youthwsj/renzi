@@ -5,10 +5,21 @@
       <Pagetools>
         <template #left> 总记录条数:20 </template>
         <template #right>
-          <el-button type="primary" size="medium" @click="$router.push('/import')">
+          <!-- v-if="$store.state.user.userInfo.roles.points.includes('导入')" -->
+          <el-button
+            v-allow="'导入'"
+            type="primary"
+            size="medium"
+            @click="$router.push('/import')"
+          >
             导入excel
           </el-button>
-          <el-button type="success" size="medium" @click="onclick">导出excel</el-button>
+          <el-button
+            v-allow="'导出'"
+            type="success"
+            size="medium"
+            @click="onclick"
+          >导出excel</el-button>
           <el-button
             type="warning"
             size="medium"
@@ -220,6 +231,7 @@ export default {
       this.total++
       this.page = Math.ceil(this.total / this.size)
       this.loadEmployees()
+      this.$refs.epmson.resetForm()
     },
     // 右上角关闭前函数
     handleClose() {

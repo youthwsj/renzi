@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 Vue.use(Router)
 
 /* Layout */
@@ -71,8 +70,6 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true },
   {
     path: '/import',
     component: Layout,

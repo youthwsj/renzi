@@ -41,7 +41,24 @@ router.beforeEach(async(to, from, next) => {
     // if('没有用户信息' && 有token) {
     if (!store.state.user.userInfo.userId && token) {
       await store.dispatch('user/getUserInfo')
-      router.addRoutes(asyncRoutes)
+      const menus = store.state.user.userInfo.roles.menus
+      console.log('用户权限数组', menus, '用户信息', store.state.user, '动态数组', asyncRoutes)
+      const myAsyncRoutes = asyncRoutes.filter(route => {
+        const routeName = route.children[0].name
+        return menus.includes(routeName)
+      })
+      // 将404存到最后一位 防止在中间出现一刷新就404的bug
+      myAsyncRoutes.push({ path: '*', redirect: '/404', hidden: true })
+      // 404 page must be placed at the end !!!
+      // 先动态添加
+      router.addRoutes(myAsyncRoutes)
+      // 再保存到vuex
+      store.commit('menu/setMenuList', myAsyncRoutes)
+      // 解决刷新出现的白屏bug
+      next({
+        ...to, // next({ ...to })的目的,是保证路由添加完了再进入页面 (可以理解为重进一次)
+        replace: true // 重进一次, 不保留重复历史
+      })
     }
     next()
   }
