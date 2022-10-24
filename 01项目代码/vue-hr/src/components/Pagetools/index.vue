@@ -10,8 +10,7 @@
       </div>
       <div class="right">
         <!-- 右侧 -->
-        <slot name="right">默认右侧区域</slot>
-      </div>
+        <slot name="right">默认右侧区域</slot></div>
     </div>
   </el-card>
 </template>

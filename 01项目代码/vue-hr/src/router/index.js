@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
+import i18n from '@/lang'
 /* Layout */
 import Layout from '@/layout'
 
@@ -67,7 +67,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'route.dashboard', icon: 'dashboard' }
     }]
   },
   {

@@ -7,7 +7,7 @@ export default {
       path: '',
       name: 'employees',
       component: () => import('@/views/employees/employees.vue'),
-      meta: { title: '员工', icon: 'form' }
+      meta: { title: 'route.users', icon: 'form' }
     },
     {
       path: '/employees/detail',

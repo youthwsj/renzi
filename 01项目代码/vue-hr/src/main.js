@@ -13,6 +13,9 @@ import directive from '@/Directive'
 Vue.use(directive)
 import '@/styles/index.scss' // global css
 
+// 省略其他...
+import i18n from '@/lang'
+
 import App from './App'
 import store from './store' // './store/index.js'
 // 引入路由
@@ -48,5 +51,6 @@ new Vue({
   el: '#app',
   router, // 路由
   store, // vuex
+  i18n,
   render: h => h(App)
 })

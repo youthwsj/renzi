@@ -7,7 +7,7 @@ export default {
       path: '',
       name: 'departments',
       component: () => import('@/views/departments/departments.vue'),
-      meta: { title: '组织架构', icon: 'eye' }
+      meta: { title: 'route.departments', icon: 'eye' }
     }
   ]
 }

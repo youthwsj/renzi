@@ -42,7 +42,7 @@ router.beforeEach(async(to, from, next) => {
     if (!store.state.user.userInfo.userId && token) {
       await store.dispatch('user/getUserInfo')
       const menus = store.state.user.userInfo.roles.menus
-      console.log('用户权限数组', menus, '用户信息', store.state.user, '动态数组', asyncRoutes)
+      // console.log('用户权限数组', menus, '用户信息', store.state.user, '动态数组', asyncRoutes)
       const myAsyncRoutes = asyncRoutes.filter(route => {
         const routeName = route.children[0].name
         return menus.includes(routeName)

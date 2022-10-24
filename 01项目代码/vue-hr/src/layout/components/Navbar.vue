@@ -8,6 +8,7 @@
     </div>
 
     <div class="right-menu">
+      <Lang />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img src="@/assets/common/bigUserHeader.png" class="user-avatar"> -->
